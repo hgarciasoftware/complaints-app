@@ -29,9 +29,27 @@ boroughsButtonGroup.addEventListener('click', function fetchAndCache(event) {
     .then(groupedData => {
       function renderOutput(event) {
         const n = Number(inputElement.value || 10);
-        const outputText = groupedData[event.target.id].slice(0, n);
+        const complaints = groupedData[event.target.id].slice(0, n);
 
-        outputElement.textContent = JSON.stringify(outputText, null, 2);
+        let complaintsHTML = '';
+
+        for (let i = 0; i < complaints.length; i++) {
+          complaintsHTML += '<div class="row">';
+
+          complaintsHTML += complaints[i].descriptor;
+
+          complaintsHTML += '<button onclick="';
+          complaintsHTML += `document.getElementById('resolution-${i}').classList.toggle('hide')`;
+          complaintsHTML += '">WHAT DID THE POLICE DO?</button>';
+
+          complaintsHTML += `<div id="resolution-${i}" class="wide hide">`;
+          complaintsHTML += complaints[i].resolution_description;
+          complaintsHTML += '</div>';
+
+          complaintsHTML += '</div>';
+        }
+
+        outputElement.innerHTML = complaintsHTML;
       }
 
       for (const button of boroughButtons) {

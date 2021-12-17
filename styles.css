@@ -1,3 +1,14 @@
+body {
+  margin: 0;
+}
+
+.app {
+  margin: 0 auto;
+  max-width: 760px;
+  min-width: 312px;
+  padding: 8px;
+}
+
 input {
   font-family: monospace;
   width: 28px;
@@ -7,6 +18,15 @@ input {
   display: inline-block;
 }
 
-pre {
-  white-space: pre-wrap;
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.wide {
+  grid-column: 1 / 3;
+}
+
+.hide {
+  display: none;
 }
