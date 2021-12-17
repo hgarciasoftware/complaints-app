@@ -1,0 +1,8 @@
+input {
+  font-family: monospace;
+  width: 28px;
+}
+
+pre {
+  white-space: pre-wrap;
+}
