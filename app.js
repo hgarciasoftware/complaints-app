@@ -1,64 +1,45 @@
-const boroughsDiv = document.querySelector('#boroughs');
-const buttonsNodeList = document.querySelectorAll('button');
-const outputDiv = document.querySelector('#output');
+const boroughsButtonGroup = document.querySelector('#boroughs');
 
-const buttonsArray = Array.from(buttonsNodeList);
+const boroughButtons = Array.from(document.querySelectorAll('.borough'));
+const inputElement = document.querySelector('input');
+const outputElement = document.querySelector('#output');
 
-boroughsDiv.addEventListener('click', function cacheData(event) {
-  if (!buttonsArray.includes(event.target)) return;
+boroughsButtonGroup.addEventListener('click', function fetchAndCache(event) {
+  if (!boroughButtons.includes(event.target)) return;
 
-  function processData(rawData) {
-    const processedData = rawData
-      .filter(record => record.resolution_description !== undefined && record.agency === 'NYPD')
-        .map(record => ({
-          borough: record.borough,
-          descriptor: record.descriptor,
-          agency: record.agency,
-          resolution_description: record.resolution_description
-        }));
-
-    return processedData;
-  }
-  function boroughEquals(borough) {
-    return function (record) {
-      return record.borough === borough;
-    };
+  function matchDataByBorough(data, borough) {
+    return data.filter(record => record.borough === borough);
   }
 
-  console.log('working');
+  const NYC311_SODA_URL = 'https://data.cityofnewyork.us/resource/erm2-nwe9.json';
+  const select = 'SELECT borough,descriptor,agency,resolution_description';
+  const where = 'WHERE agency="NYPD"';
+  // const order = 'ORDER BY creation_date';
+  const query = `$query=${select} ${where}`;
 
-  fetch('https://data.cityofnewyork.us/resource/erm2-nwe9.json')
+  fetch(`${NYC311_SODA_URL}?${query}`)
     .then(response => response.json(), alert)
-      .then(processData, alert)
-      .then(processedData => {
-        const bronxData = processedData.filter(boroughEquals('BRONX'));
-        const brooklynData = processedData.filter(boroughEquals('BROOKLYN'));
-        const manhattanData = processedData.filter(boroughEquals('MANHATTAN'));
-        const queensData = processedData.filter(boroughEquals('QUEENS'));
-        const statenIslandData = processedData.filter(boroughEquals('STATEN ISLAND'));
-        return {
-          bronx: bronxData,
-          brooklyn: brooklynData,
-          manhattan: manhattanData,
-          queens: queensData,
-          'staten-island': statenIslandData
-        };
-      }, alert)
-      .then(boroughs => {
-        function buttonClickHandler(event) {
-          const n = Number(document.querySelector('#number-of-complaints').value);
-          outputDiv.innerHTML = JSON.stringify(boroughs[event.target.id].slice(0, n || 10), null, 2);
-        }
+    .then(data => ({
+      bronx: matchDataByBorough(data, 'BRONX'),
+      brooklyn: matchDataByBorough(data, 'BROOKLYN'),
+      manhattan: matchDataByBorough(data, 'MANHATTAN'),
+      queens: matchDataByBorough(data, 'QUEENS'),
+      'staten-island': matchDataByBorough(data, 'STATEN ISLAND')
+    }), alert)
+    .then(groupedData => {
+      function renderOutput(event) {
+        const n = Number(inputElement.value || 10);
+        const outputText = groupedData[event.target.id].slice(0, n);
 
-        buttonsArray[0].addEventListener('click', buttonClickHandler);
-        buttonsArray[1].addEventListener('click', buttonClickHandler);
-        buttonsArray[2].addEventListener('click', buttonClickHandler);
-        buttonsArray[3].addEventListener('click', buttonClickHandler);
-        buttonsArray[4].addEventListener('click', buttonClickHandler);
-      }, alert)
-      .then(rawData => {
-        boroughsDiv.removeEventListener('click', cacheData);
-        event.target.click();
-        console.log('done!');
-      }, alert);
+        outputElement.textContent = JSON.stringify(outputText, null, 2);
+      }
+
+      for (const button of boroughButtons) {
+        button.addEventListener('click', renderOutput);
+      }
+    }, alert)
+    .then(rawData => {
+      boroughsButtonGroup.removeEventListener('click', fetchAndCache);
+      event.target.click();
+    }, alert);
 });
