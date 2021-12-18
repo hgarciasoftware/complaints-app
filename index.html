@@ -3,10 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=768">
   <title>Complaints App</title>
   <link href="./common.css" rel="stylesheet">
   <link href="./styles.css" rel="stylesheet">
+  <script>
+    const viewportMetaTag = document.querySelector('meta[name="viewport"]');
+
+    function adjustViewport() {
+      if (screen.width < 768) {
+        if (screen.orientation.type === 'landscape-primary') {
+          viewportMetaTag.setAttribute('content', 'width=960');
+        } else if (screen.orientation.type === 'portrait-primary') {
+          viewportMetaTag.setAttribute('content', 'width=768');
+        }
+      }
+    }
+
+    adjustViewport();
+    window.addEventListener('orientationchange', adjustViewport);
+  </script>
 </head>
 <body>
   <div class="container app">
@@ -26,6 +42,6 @@
     </div>
     <div id="service-requests" class="col"></div>
   </div>
-  <script src="app.js"></script>
+  <script src="./app.js"></script>
 </body>
 </html>
