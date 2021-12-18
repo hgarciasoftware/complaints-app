@@ -1,8 +1,8 @@
 const boroughsButtonGroup = document.querySelector('#boroughs');
 
-const boroughButtons = Array.from(document.querySelectorAll('.borough'));
+const boroughButtons = Array.from(document.querySelectorAll('.borough-btn'));
 const inputElement = document.querySelector('input');
-const outputElement = document.querySelector('#output');
+const serviceRequests = document.querySelector('#service-requests');
 
 boroughsButtonGroup.addEventListener('click', function fetchAndCache(event) {
   if (!boroughButtons.includes(event.target)) return;
@@ -12,7 +12,7 @@ boroughsButtonGroup.addEventListener('click', function fetchAndCache(event) {
   }
 
   const NYC311_SODA_URL = 'https://data.cityofnewyork.us/resource/erm2-nwe9.json';
-  const select = 'SELECT borough,descriptor,agency,resolution_description';
+  const select = 'SELECT borough,descriptor,resolution_description';
   const where = 'WHERE agency="NYPD"';
   // const order = 'ORDER BY creation_date';
   const query = `$query=${select} ${where}`;
@@ -31,25 +31,28 @@ boroughsButtonGroup.addEventListener('click', function fetchAndCache(event) {
         const n = Number(inputElement.value || 10);
         const complaints = groupedData[event.target.id].slice(0, n);
 
+        complaints.sort((a, b) => a.descriptor.localeCompare(b.descriptor));
+
         let complaintsHTML = '';
 
         for (let i = 0; i < complaints.length; i++) {
-          complaintsHTML += '<div class="row">';
-
+          // open complaint-row container
+          complaintsHTML += '<div class="complaint-grid bold">';
+          // add complaint descriptor
           complaintsHTML += complaints[i].descriptor;
-
-          complaintsHTML += '<button onclick="';
+          // add button that toggles resolution description
+          complaintsHTML += '<button class="btn" onclick="';
           complaintsHTML += `document.getElementById('resolution-${i}').classList.toggle('hide')`;
           complaintsHTML += '">WHAT DID THE POLICE DO?</button>';
-
-          complaintsHTML += `<div id="resolution-${i}" class="wide hide">`;
+          // add resolution description
+          complaintsHTML += `<div id="resolution-${i}" class="wide-row hide">`;
           complaintsHTML += complaints[i].resolution_description;
           complaintsHTML += '</div>';
-
+          // close complaint-row container
           complaintsHTML += '</div>';
         }
 
-        outputElement.innerHTML = complaintsHTML;
+        serviceRequests.innerHTML = complaintsHTML;
       }
 
       for (const button of boroughButtons) {

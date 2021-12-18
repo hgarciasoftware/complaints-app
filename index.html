@@ -5,19 +5,26 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Complaints App</title>
-  <link href="styles.css" rel="stylesheet">
+  <link href="./common.css" rel="stylesheet">
+  <link href="./styles.css" rel="stylesheet">
 </head>
 <body>
-  <div class="app">
-    <input type="number">
-    <div id="boroughs" class="button-group">
-      <button id="brooklyn" class="borough">BROOKLYN</button>
-      <button id="manhattan" class="borough">MANHATTAN</button>
-      <button id="queens" class="borough">QUEENS</button>
-      <button id="bronx" class="borough">BRONX</button>
-      <button id="staten-island" class="borough">STATEN ISLAND</button>
+  <div class="container app">
+    <div class="col-3 sticky-flex-item">
+      <p>
+        <label class="bold">enter number of complaints</label>
+        <input type="number" min="0" placeholder="10">
+      </p>
+      <div id="boroughs" class="btn-group-vertical">
+        <button id="brooklyn" class="btn btn-light text-left borough-btn">BROOKLYN<i class="borough-btn-icon hide"></i></button>
+        <button id="manhattan" class="btn btn-light text-left borough-btn">MANHATTAN<i class="borough-btn-icon hide"></i></button>
+        <button id="queens" class="btn btn-light text-left borough-btn">QUEENS<i class="borough-btn-icon hide"></i></button>
+        <button id="bronx" class="btn btn-light text-left borough-btn">BRONX<i class="borough-btn-icon hide"></i></button>
+        <button id="staten-island" class="btn btn-light text-left borough-btn">STATEN ISLAND<i class="borough-btn-icon hide"></i></button>
+      </div>
+      <h1 class="text-center"><img src="./dougie-donut.png" alt="dougie donut" width=100>secret app<img src="./pizza-rat.png" alt="pizza rat" width=100></h1>
     </div>
-    <div id="output" class="output-container"></div>
+    <div id="service-requests" class="col"></div>
   </div>
   <script src="app.js"></script>
 </body>

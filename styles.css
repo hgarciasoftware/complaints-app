@@ -1,0 +1,58 @@
+body {
+  background-color: #f4fbfd;
+}
+
+h1 {
+  bottom: 0;
+  max-width: calc(.3 * 960px);
+  position: fixed;
+  width: inherit;
+  /* flex system */
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.app {
+  column-gap: 15px;
+  display: flex;
+  max-width: 960px;
+  min-width: 768px;
+}
+
+.app .sticky-flex-item {
+  align-self: flex-start;
+  height: calc(100vh - 16px);
+  position: sticky;
+  top: 8px;
+}
+
+.borough-btn {
+  position: relative;
+}
+
+.borough-btn-icon {
+  position: absolute;
+  right: 12px;
+}
+
+.borough-btn-icon::before {
+  content: ">>";
+}
+
+.complaint-grid {
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
+  height: 126px;
+  margin: 16px 0;
+  padding: 6px 12px;
+  /* grid system */
+  align-items: start;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.complaint-grid .wide-row {
+  grid-column: 1 / -1;
+}
