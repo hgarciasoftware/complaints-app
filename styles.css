@@ -2,7 +2,7 @@ body {
   background-color: #f4fbfd;
 }
 
-h1 {
+h2 {
   bottom: 0;
   max-width: calc(.3 * 960px);
   position: fixed;
