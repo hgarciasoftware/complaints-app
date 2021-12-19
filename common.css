@@ -65,11 +65,11 @@ input {
 }
 
 .hide {
-  display: none;
+  visibility: hidden;
 }
 
 .btn:hover .hide {
-  display: initial;
+  visibility: visible;
 }
 
 .text-left {
